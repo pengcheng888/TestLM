@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FolderPath=/home/orin/workspace_aisys/TestLMcode
-export TEST_MODEL=/home/ubuntu/workspace_aisys/gguf_model/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+export TEST_MODEL=/home/orin/workspace_aisys/TinyLlama-1.1B-Chat-v1.0-F16.gguf
 
 #!
 #! 安装 operators
@@ -37,7 +37,7 @@ pwd
 git clone https://github.com/InfiniTensor/infer.cc.git
 cd infer.cc
 xmake f --nv-gpu=true -cv
-xmake f --ccl=false --infer=false -cv
+xmake f --ccl=true --infer=true -cv
 xmake && xmake install
 }
 
@@ -108,6 +108,7 @@ cd "$FolderPath" || { echo "无法进入目录: $FolderPath"; exit 1; }
 cd InfiniLM/
 pwd
 export DEVICES=0
+export CCCL_IGNORE_DEPRECATED_CUDA_BELOW_12=1
 cargo test --release --package llama-cuda --lib -- infer::test_infer --exact --nocapture
 }
 
@@ -134,12 +135,13 @@ echo "==========================================================================
 echo "==========================         run_test             =================================="
 echo "=========================================================================================="
 #run_cpu
-#run_nvidia
+run_nvidia
 pwd
 }
 ##########################################################################
 ##########################################################################
 ##########################################################################
 ##########################################################################
-install_test
+#install_test
+run_test
 
