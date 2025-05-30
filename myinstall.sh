@@ -1,7 +1,29 @@
 #!/bin/bash
 
-FolderPath=/home/orin/workspace_aisys/TestLMcode
-export TEST_MODEL=/home/orin/workspace_aisys/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+FolderPath=/home/nvidia/LMcode
+export TEST_MODEL=/home/nvidia/Downloads/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+
+
+function install_env() {
+echo "=========================================================================================="
+echo "==========================        install_operators     =================================="
+echo "=========================================================================================="
+
+# xmake
+curl -fsSL https://xmake.io/shget.text | bash
+sleep 1
+# rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# INFINI =======> 
+export INFINI_ROOT=/home/nvidia/.infini
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/nvidia/.infini/lib
+sleep 1
+sudo apt-get update
+sleep 1
+sudo apt-get install clang
+}
+
 
 #!
 #! 安装 operators
@@ -108,7 +130,7 @@ cd "$FolderPath" || { echo "无法进入目录: $FolderPath"; exit 1; }
 cd InfiniLM/
 pwd
 export DEVICES=0
-export CCCL_IGNORE_DEPRECATED_CUDA_BELOW_12=1
+export RUST_BACKTRACE=1
 cargo test --release --package llama-cuda --lib -- infer::test_infer --exact --nocapture
 }
 
@@ -123,9 +145,9 @@ echo "==========================================================================
 echo "==========================       install_test           =================================="
 echo "=========================================================================================="
 
-install_operators
-install_infer
-install_gguf
+#install_operators
+#install_infer
+#install_gguf
 install_InfiniLM
 pwd
 }
@@ -135,6 +157,12 @@ echo "==========================================================================
 echo "==========================         run_test             =================================="
 echo "=========================================================================================="
 #run_cpu
+
+
+###!
+# zai operators-rs/operators/src/fuesd_softmax/cuda/fused_softmax.cuh zhong
+# (1) zengjia #include <cub/cub.cuh>
+# (2) xiugaiwei FLT_MAX
 run_nvidia
 pwd
 }
