@@ -1,9 +1,18 @@
 #!/bin/bash
 
 FolderPath=/home/nvidia/LMcode
-#export TEST_MODEL=/home/nvidia/Documents/TinyLlama-1.1B-Chat-v1.0-F16.gguf
-export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Qwen-1.5B-v0.0-F16.gguf
 
+export MAX_STEPS=1000
+export TEMPERATURE=1.0
+export AS_USER=1
+
+#export TEST_MODEL=/home/nvidia/Documents/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+#export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Qwen-1.5B-v0.0-F16.gguf
+export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Llama-8B-v0.0-F16.gguf
+#export TEST_MODEL=/home/nvidia/Documents/fm9g-8.8B-sft-v0.0-FP16.gguf
+
+export PROMPT="Once upon a time, I meet "
+#export PROMPT="有一天早上，我去"
 
 
 function install_env() {
@@ -24,6 +33,14 @@ sleep 1
 sudo apt-get update
 sleep 1
 sudo apt-get install clang
+
+# jtop
+sudo -H pip install jetson-stats
+sudo jtop
+
+#安装llvm
+sudo apt update
+sudo apt install llvm clang
 }
 
 
@@ -132,8 +149,10 @@ cd "$FolderPath" || { echo "无法进入目录: $FolderPath"; exit 1; }
 cd InfiniLM/
 pwd
 export DEVICES=0
-export RUST_BACKTRACE=1 # debug
-export RUSTFLAGS="-C target-feature=+fullfp16" # error: instruction requires: fullfp16
+#export RUST_BACKTRACE=1 # debug
+#export RUSTFLAGS="-C target-feature=+fullfp16" # error: instruction requires: fullfp16
+export RUSTFLAGS="-C target-feature=+fp16"
+
 # cargo test --package operators --lib -- add::cuda::test --show-output 
 # cargo test --package operators --lib -- rms_norm::cuda::test --show-output
 # cargo test --release
