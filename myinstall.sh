@@ -11,8 +11,8 @@ export AS_USER=1
 export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Llama-8B-v0.0-F16.gguf
 #export TEST_MODEL=/home/nvidia/Documents/fm9g-8.8B-sft-v0.0-FP16.gguf
 
-export PROMPT="Once upon a time, I meet "
-#export PROMPT="有一天早上，我去"
+export PROMPT="Once upon a time,"
+export PROMPT="很久很久以前，有一个"
 
 
 function install_env() {
