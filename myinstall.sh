@@ -1,7 +1,9 @@
 #!/bin/bash
 
 FolderPath=/home/nvidia/LMcode
-export TEST_MODEL=/home/nvidia/Downloads/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+#export TEST_MODEL=/home/nvidia/Documents/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Qwen-1.5B-v0.0-F16.gguf
+
 
 
 function install_env() {
@@ -93,7 +95,7 @@ sleep 1
 cd "$FolderPath" || { echo "无法进入目录: $FolderPath"; exit 1; }
 pwd
 
-git clone https://github.com/InfiniTensor/InfiniLM
+git clone https://github.com/InfiniTensor/InfiniLM -b dev
 cd InfiniLM
 }
 ##########################################################################
@@ -130,7 +132,11 @@ cd "$FolderPath" || { echo "无法进入目录: $FolderPath"; exit 1; }
 cd InfiniLM/
 pwd
 export DEVICES=0
-export RUST_BACKTRACE=1
+export RUST_BACKTRACE=1 # debug
+export RUSTFLAGS="-C target-feature=+fullfp16" # error: instruction requires: fullfp16
+# cargo test --package operators --lib -- add::cuda::test --show-output 
+# cargo test --package operators --lib -- rms_norm::cuda::test --show-output
+# cargo test --release
 cargo test --release --package llama-cuda --lib -- infer::test_infer --exact --nocapture
 }
 
@@ -158,11 +164,6 @@ echo "==========================         run_test             ==================
 echo "=========================================================================================="
 #run_cpu
 
-
-###!
-# zai operators-rs/operators/src/fuesd_softmax/cuda/fused_softmax.cuh zhong
-# (1) zengjia #include <cub/cub.cuh>
-# (2) xiugaiwei FLT_MAX
 run_nvidia
 pwd
 }
@@ -172,4 +173,6 @@ pwd
 ##########################################################################
 #install_test
 run_test
+
+# zuihoude zongjie 
 
