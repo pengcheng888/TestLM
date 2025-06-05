@@ -1,18 +1,22 @@
 #!/bin/bash
 
 FolderPath=/home/nvidia/LMcode
+gguf_model_Folder=/mnt/DataDisk/gguf_model
 
 export MAX_STEPS=1000
 export TEMPERATURE=1.0
 export AS_USER=1
+##
+#export TEST_MODEL="$gguf_model_Folder"/TinyLlama-1.1B-Chat-v1.0-F16.gguf
+#export TEST_MODEL="$gguf_model_Folder"/DeepSeek-R1-Distill-Qwen-1.5B-v0.0-F16.gguf
+#export TEST_MODEL="$gguf_model_Folder"/DeepSeek-R1-Distill-Llama-8B-v0.0-F16.gguf
+export TEST_MODEL="$gguf_model_Folder"/fm9g-8.8B-sft-v0.0-FP16.gguf
+##
+#export TEST_MODEL="$gguf_model_Folder"/fm9g-2B-sft-v0.0-F16.gguf
+#export TEST_MODEL="$gguf_model_Folder"/fm9g-7B-sft-v0.0-F16.gguf
 
-#export TEST_MODEL=/home/nvidia/Documents/TinyLlama-1.1B-Chat-v1.0-F16.gguf
-#export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Qwen-1.5B-v0.0-F16.gguf
-export TEST_MODEL=/home/nvidia/Documents/DeepSeek-R1-Distill-Llama-8B-v0.0-F16.gguf
-#export TEST_MODEL=/home/nvidia/Documents/fm9g-8.8B-sft-v0.0-FP16.gguf
-
-export PROMPT="Once upon a time,"
-export PROMPT="很久很久以前，有一个"
+#export PROMPT="Once upon a time,"
+export PROMPT="接下来讲一个不少于1000字的故事，"
 
 
 function install_env() {
