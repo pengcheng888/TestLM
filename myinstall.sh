@@ -81,8 +81,7 @@ pwd
 
 git clone https://github.com/InfiniTensor/infer.cc.git
 cd infer.cc
-xmake f --nv-gpu=true -cv
-xmake f --ccl=true --infer=true -cv
+xmake f --nv-gpu=true --ccl=true --infer=true -cv
 xmake && xmake install
 }
 
